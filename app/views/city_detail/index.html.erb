@@ -1,0 +1,458 @@
+<%= render 'creatives/navbar' %>
+
+<header id="header_city_omg">
+  <div class="header-content">
+    <div class="header-content-inner" id="title_cities">
+      <h1><%= @city_name %></h1>
+      <hr>
+      <p>Listing all attractions for <%= @city_name %></p>
+      <a href="#show_list" class="btn btn-primary btn-xl page-scroll">Go</a>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+
+  <div class="row">
+    <div class="col-md-8">
+      <section id="show_list">
+        <table id="table_data" class="table table-striped table-bordered" cellspacing="0" width="100%">
+          <thead>
+          <tr>
+            <th>Title</th>
+            <th>Price</th>
+            <th>Description</th>
+          </tr>
+          </thead>
+          <tfoot>
+          <tr>
+            <th>Title</th>
+            <th>Price</th>
+            <th>Description</th>
+          </tr>
+          </tfoot>
+        </table>
+      </section>
+    </div>
+
+    <div class="col-md-4">
+      <div class="row">
+        <h3>Weather</h3>
+        <table id="weatherforecast" width="100%">
+
+          <tr class="forecastColumn">
+            <th class="forecastCell">Current</th>
+            <th class="forecastCell"><span id=date1></span></th>
+            <th class="forecastCell"><span id=date2></span></th>
+            <th class="forecastCell"><span id=date3></span></th>
+            <th class="forecastCell"><span id=date4></span></th>
+          </tr>
+
+
+          <tr class="forecastColumn">
+            <th class="forecastCelltemp"><span id="mytemp"></span></th>
+            <th class="forecastCelltemp"><span id="mytemp1"></span></th>
+            <th class="forecastCelltemp"><span id="mytemp2"></span></th>
+            <th class="forecastCelltemp"><span id="mytemp3"></span></th>
+            <th class="forecastCelltemp"><span id="mytemp4"></span></th>
+
+          </tr>
+
+
+          <tr class="forecastColumn">
+            <th><span class="iconw" id="weathericon"></span></th>
+            <th><span class="iconw" id="weathericon1"></span></th>
+            <th><span class="iconw" id="weathericon2"></span></th>
+            <th><span class="iconw" id="weathericon3"></span></th>
+            <th><span class="iconw" id="weathericon4"></span></th>
+
+          </tr>
+
+          <tr class="forecastColumn">
+            <th class="forecastCell"><span id=date5></span></th>
+            <th class="forecastCell"><span id=date6></span></th>
+            <th class="forecastCell"><span id=date7></span></th>
+            <th class="forecastCell"><span id=date8></span></th>
+            <th class="forecastCell"><span id=date9></span></th>
+          </tr>
+
+          <tr class="forecastColumn">
+            <th class="forecastCelltemp"><span id="mytemp5"></span></th>
+            <th class="forecastCelltemp"><span id="mytemp6"></span></th>
+            <th class="forecastCelltemp"><span id="mytemp7"></span></th>
+            <th class="forecastCelltemp"><span id="mytemp8"></span></th>
+            <th class="forecastCelltemp"><span id="mytemp9"></span></th>
+          </tr>
+
+
+          <tr class="forecastColumn">
+            <th><span class="iconw" id="weathericon5"></span></th>
+            <th><span class="iconw" id="weathericon6"></span></th>
+            <th><span class="iconw" id="weathericon7"></span></th>
+            <th><span class="iconw" id="weathericon8"></span></th>
+            <th><span class="iconw" id="weathericon9"></span></th>
+          </tr>
+
+
+        </table>
+      </div>
+
+      <div class="row">
+        <h3>Schedule</h3>
+        <% if current_user.nil? %>
+            <h4>Please log in to create a schedule...</h4>
+        <% else %>
+            <div class="input-group">
+              <input id="budget" type="number" autocomplete="off" class="form-control" name="budget" placeholder="Budget"><span class="input-group-addon"><i class="fa fa-fw  fa-usd" aria-hidden="true"></i></span>
+            </div>
+            <div class="input-group">
+              <input id="days" type="number" autocomplete="off" class="form-control" name="days" placeholder="Number of days for vacation"><span class="input-group-addon"><i class="fa fa-fw fa-calendar-plus-o" aria-hidden="true"></i></span>
+            </div>
+            <br>
+
+            <button onclick="executeorder66()" type="submit" class="btn btn-success btn-group-justified">Generate
+              Schedule
+            </button>
+            <p id="errorInForm"></p>
+        <% end %>
+      </div>
+
+      <div class="row">
+          <h3>News</h3>
+          <p class = "newsheadlines" id = "newsheadline0"></p>
+          <p class = "newsheadlines" id = "newsheadline1"></p>
+          <p class = "newsheadlines" id = "newsheadline2"></p>
+
+            <script>
+
+              var urlnews = 'https://newsapi.org/v2/everything?' +'q=' +
+                           '<%= @city_name %>' + '&' +
+                            'sources=daily-mail&' +
+                           'apiKey=eb693c37d16f4bd58f1bb152f6d010d0';
+
+                           console.log(urlnews);
+                           $(function () {
+                               $.getJSON(urlnews, function (data) {
+
+                                 for(var i=0; i <3; i++){
+                                   var headlines = data.articles[i].title;
+                                   var url2 = data.articles[i].url;
+
+                              //     document.getElementById("newsheadline"+i).innerHTML = headlines;
+
+                                   var link = "<a href="+url2+">"+headlines+"</a>";
+
+                                   $(link).appendTo("#newsheadline"+i);
+
+                                 }
+
+                               })
+                             })
+
+            </script>
+
+
+
+
+
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#table_data').DataTable({
+            "processing": true,
+            ajax: {
+                "url": "https://pure-coast-27115.herokuapp.com/data/city/" + <%= @city_id %>
+            },
+            "columns":
+                [
+                    {data: "title"},
+                    {
+                        data: "price", render: function (data, type, row) {
+                        if (type === 'display') {
+                            var numberRenderer = $.fn.dataTable.render.number(',', '.', 0, '$').display;
+                            return numberRenderer(data);
+                        }
+                        return data;
+                    }
+                    },
+                    {
+                        data: "id", render: function (data, type, row) {
+                        return '<a href="https://pure-coast-27115.herokuapp.com/attraction_detail/' + data + '">Learn more <i class="fa fa-arrow-right" aria-hidden="true"></i></a>';
+                    }
+                    }
+                ],
+            "lengthMenu":
+                [[15, 25, 50, 100, -1], [15, 25, 50, 100, "All"]]
+        })
+        ;
+    });
+</script>
+
+<script type="text/javascript">
+    function executeorder66() {
+        var budget = document.getElementById('budget').value;
+        var days = document.getElementById('days').value;
+
+        var ok = true;
+        if ((budget < 50) || (budget > 1000)) {
+            document.getElementById('errorInForm').innerHTML = 'Please enter a budget between $50 and $1000 only!';
+            ok = false;
+        }
+
+        if ((days < 0) || (days > 10)) {
+            document.getElementById('errorInForm').innerHTML = 'Please enter days between 1 and 10 only!';
+            ok = false;
+        }
+
+        if (ok === true) {
+            location.href = "https://pure-coast-27115.herokuapp.com/schedules/city/" + <%= @city_id %> +"/days/" + days + "/budget/" + budget;
+        }
+    }
+</script>
+
+<script>
+    //  var xhr = new XMLHttpRequest();
+    var apiAddress = 'https://api.apixu.com/v1/forecast.json?key=c0d375072f834120aa250648170312&days=10&q=';
+    var city = '<%= @city_name%>';
+    var url = apiAddress + city;
+
+    console.log(city);
+    //    xhr.open("GET", url, false);
+    //  xhr.send();
+    //formmatedStuff =
+    //    loadJSON(url,gotData);
+    //  function gotData(data){
+    //    weather = data;
+    //    }
+    //  var json = JSON.parse()
+
+    $(function () {
+        $.getJSON(url, function (data) {
+
+            var temp = data.current.temp_c + "&#8451;";
+            var weatherX = data.current.condition.text;
+            var weathercode = 'https:' + data.current.condition.icon;
+
+            document.getElementById("mytemp").innerHTML = temp;
+            //      document.getElementById("myweatherX").innerHTML = weatherX;
+
+
+            var img = document.createElement("img");
+            img.src = weathercode;
+            var src = document.getElementById("weathericon");
+            src.appendChild(img);
+
+
+            var temp1 = data.forecast.forecastday[1].hour[15].temp_c + "&#8451;";
+            var weather1 = data.forecast.forecastday[1].hour[15].condition.text;
+            var weathercode1 = 'https:' + data.forecast.forecastday[1].hour[15].condition.icon;
+
+            document.getElementById("mytemp1").innerHTML = temp1;
+            //    document.getElementById("myweather1").innerHTML = weather1;
+
+            var img = document.createElement("img");
+            img.src = weathercode1;
+            var src = document.getElementById("weathericon1");
+            src.appendChild(img);
+
+
+            var temp2 = data.forecast.forecastday[2].hour[15].temp_c + "&#8451;";
+            var weather2 = data.forecast.forecastday[2].hour[15].condition.text;
+            var weathercode2 = 'https:' + data.forecast.forecastday[2].hour[15].condition.icon;
+
+            document.getElementById("mytemp2").innerHTML = temp2;
+            //     document.getElementById("myweather2").innerHTML = weather2;
+
+            var img = document.createElement("img");
+            img.src = weathercode1;
+            var src = document.getElementById("weathericon2");
+            src.appendChild(img);
+
+
+            var temp3 = data.forecast.forecastday[3].hour[15].temp_c + "&#8451;";
+            var weather3 = data.forecast.forecastday[3].hour[15].condition.text;
+            var weathercode3 = 'https:' + data.forecast.forecastday[3].hour[15].condition.icon;
+
+            document.getElementById("mytemp3").innerHTML = temp3;
+            //      document.getElementById("myweather3").innerHTML = weather3;
+
+            var img = document.createElement("img");
+            img.src = weathercode3;
+            var src = document.getElementById("weathericon3");
+            src.appendChild(img);
+
+
+            var temp4 = data.forecast.forecastday[4].hour[15].temp_c + "&#8451;";
+            var weather4 = data.forecast.forecastday[4].hour[15].condition.text;
+            var weathercode4 = 'https:' + data.forecast.forecastday[4].hour[15].condition.icon;
+
+            document.getElementById("mytemp4").innerHTML = temp4;
+            //    document.getElementById("myweather4").innerHTML = weather4;
+
+            var img = document.createElement("img");
+            img.src = weathercode4;
+            var src = document.getElementById("weathericon4");
+            src.appendChild(img);
+
+
+            var temp5 = data.forecast.forecastday[5].hour[15].temp_c + "&#8451;";
+            var weather5 = data.forecast.forecastday[5].hour[15].condition.text;
+            var weathercode5 = 'https:' + data.forecast.forecastday[5].hour[15].condition.icon;
+
+            document.getElementById("mytemp5").innerHTML = temp5;
+            //      document.getElementById("myweather5").innerHTML = weather5;
+
+            var img = document.createElement("img");
+            img.src = weathercode5;
+            var src = document.getElementById("weathericon5");
+            src.appendChild(img);
+
+
+            var temp6 = data.forecast.forecastday[6].hour[15].temp_c + "&#8451;";
+            var weather6 = data.forecast.forecastday[6].hour[15].condition.text;
+            var weathercode6 = 'https:' + data.forecast.forecastday[6].hour[15].condition.icon;
+
+            document.getElementById("mytemp6").innerHTML = temp6;
+            //    document.getElementById("myweather6").innerHTML = weather6;
+
+            var img = document.createElement("img");
+            img.src = weathercode6;
+            var src = document.getElementById("weathericon6");
+            src.appendChild(img);
+
+
+            var temp7 = data.forecast.forecastday[7].hour[15].temp_c + "&#8451;";
+            var weather7 = data.forecast.forecastday[7].hour[15].condition.text;
+            var weathercode7 = 'https:' + data.forecast.forecastday[7].hour[15].condition.icon;
+
+            document.getElementById("mytemp7").innerHTML = temp7;
+            //  document.getElementById("myweather7").innerHTML = weather7;
+
+            var img = document.createElement("img");
+            img.src = weathercode7;
+            var src = document.getElementById("weathericon7");
+            src.appendChild(img);
+
+
+            var temp8 = data.forecast.forecastday[8].hour[15].temp_c + "&#8451;";
+            var weather8 = data.forecast.forecastday[8].hour[15].condition.text;
+            var weathercode8 = 'https:' + data.forecast.forecastday[8].hour[15].condition.icon;
+
+            document.getElementById("mytemp8").innerHTML = temp8;
+            //    document.getElementById("myweather8").innerHTML = weather8;
+
+            var img = document.createElement("img");
+            img.src = weathercode8;
+            var src = document.getElementById("weathericon8");
+            src.appendChild(img);
+
+
+            var temp9 = data.forecast.forecastday[9].hour[15].temp_c + "&#8451;";
+            var weather9 = data.forecast.forecastday[9].hour[15].condition.text;
+            var weathercode9 = 'https:' + data.forecast.forecastday[9].hour[15].condition.icon;
+
+            document.getElementById("mytemp9").innerHTML = temp9;
+            //      document.getElementById("myweather9").innerHTML = weather9;
+
+            var img = document.createElement("img");
+            img.src = weathercode9;
+            var src = document.getElementById("weathericon9");
+            src.appendChild(img);
+
+
+            // to be able to change from numbers to text
+            var month = new Array();
+            month[0] = "Jan";
+            month[1] = "Feb";
+            month[2] = "Mar";
+            month[3] = "Apr";
+            month[4] = "May";
+            month[5] = "Jun";
+            month[6] = "Jul";
+            month[7] = "Aug";
+            month[8] = "Sept";
+            month[9] = "Oct";
+            month[10] = "Sep";
+            month[11] = "Dec";
+
+            var d = new Date();
+
+            var d1 = new Date();
+            d1.setDate(d.getDate() + 1);
+            var date1text = month[d1.getMonth()] + " " + d1.getDate();
+            document.getElementById("date1").innerHTML = date1text;
+
+            var d2 = new Date();
+            d2.setDate(d.getDate() + 2);
+            var date2text = month[d2.getMonth()] + " " + d2.getDate();
+            document.getElementById("date2").innerHTML = date2text;
+
+            var d3 = new Date();
+            d3.setDate(d.getDate() + 3);
+            var date3text = month[d3.getMonth()] + " " + d3.getDate();
+            document.getElementById("date3").innerHTML = date3text;
+
+            var d4 = new Date();
+            d4.setDate(d.getDate() + 4);
+            var date4text = month[d4.getMonth()] + " " + d4.getDate();
+            document.getElementById("date4").innerHTML = date4text;
+
+            var d5 = new Date();
+            d5.setDate(d.getDate() + 5);
+            var date5text = month[d5.getMonth()] + " " + d5.getDate();
+            document.getElementById("date5").innerHTML = date5text;
+
+            var d6 = new Date();
+            d6.setDate(d.getDate() + 6);
+            var date6text = month[d6.getMonth()] + " " + d6.getDate();
+            document.getElementById("date6").innerHTML = date6text;
+
+            var d7 = new Date();
+            d7.setDate(d.getDate() + 7);
+            var date7text = month[d7.getMonth()] + " " + d7.getDate();
+            document.getElementById("date7").innerHTML = date7text;
+
+
+            var d8 = new Date();
+            d8.setDate(d.getDate() + 8);
+            var date8text = month[d8.getMonth()] + " " + d8.getDate();
+            document.getElementById("date8").innerHTML = date8text;
+
+            var d9 = new Date();
+            d9.setDate(d.getDate() + 9);
+            var date9text = month[d9.getMonth()] + " " + d9.getDate();
+            document.getElementById("date9").innerHTML = date9text;
+
+
+            var month = new Array();
+            month[0] = "January";
+            month[1] = "February";
+            month[2] = "March";
+            month[3] = "April";
+            month[4] = "May";
+            month[5] = "June";
+            month[6] = "July";
+            month[7] = "August";
+            month[8] = "September";
+            month[9] = "October";
+            month[10] = "September";
+            month[11] = "December";
+
+            var monthText = month[d.getMonth()];
+
+            console.log(temp);
+            console.log(weatherX);
+        })
+
+    })
+    //  console.log(weather.main.temp);
+    //  console.log(xhr.status);
+    //  console.log(xhr.statusText);
+
+
+</script>

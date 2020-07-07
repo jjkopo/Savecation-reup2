@@ -1,0 +1,112 @@
+<%= render 'creatives/navbar' %>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<div class="container">
+  <h1 class="text-center">All the cities we support</h1>
+  <hr>
+</div>
+
+<style>
+  /* Always set the map height explicitly to define the size of the div
+   * element that contains the map. */
+  #map {
+    height: 60%;
+    width: 100%
+  }
+
+  /* Optional: Makes the sample page fill the window. */
+  html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+</style>
+
+<div id="map"></div>
+
+<br />
+<div class="container">
+  <div class="row">
+    <div class="col-md-8 col-md-offset-2 text-center">
+      <% @cities.each do |x| %>
+          <% @blah = "http://pure-coast-27115.herokuapp.com/city_detail/" + x.id.to_s %>
+          <a href="<%= @blah %>" class="btn btn-success"><%= x.name %></a>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+
+<div id="map"></div>
+<script>
+    var map;
+
+    function initMap() {
+        var Vancouver = {lat: 49.246292, lng: -123.116226};
+        var NewYork = {lat: 40.730610, lng: -73.935242};
+        var Rio = {lat: -22.9068, lng: -43.1729};
+        var Taipei = {lat: 25.0330, lng: 121.5654};
+        var Sydney = {lat: -33.8688, lng: 151.2093};
+        var Amsterdam = {lat: 52.3702, lng: 4.8952};
+        var Victoria = {lat: 48.4284, lng: -123.3656};
+        var Seattle = {lat: 47.6062, lng: -122.3321};
+        var Tokyo = {lat: 35.6895, lng: 139.6917};
+        map = new google.maps.Map(document.getElementById('map'), {
+            center: {lat: 48.630360, lng: 10.216053},
+            zoom: 3
+        });
+        var marker1 = new google.maps.Marker({
+            position: Vancouver,
+            map: map
+
+
+        });
+        var marker2 = new google.maps.Marker({
+            position: NewYork,
+            map: map
+        });
+        var marker3 = new google.maps.Marker({
+            position: Rio,
+            map: map
+        });
+        var marker4 = new google.maps.Marker({
+            position: Taipei,
+            map: map
+        });
+        var marker5 = new google.maps.Marker({
+            position: Sydney,
+            map: map
+        });
+        var marker6 = new google.maps.Marker({
+            position: Amsterdam,
+            map: map
+        });
+        var marker7 = new google.maps.Marker({
+            position: Victoria,
+            map: map
+        });
+        var marker8 = new google.maps.Marker({
+            position: Toronto,
+            map: map
+        });
+        var marker9 = new google.maps.Marker({
+            position: Seattle,
+            map: map
+        });
+        var marker10 = new google.maps.Marker({
+            position: SaoPaulo,
+            map: map
+        });
+        var marker11 = new google.maps.Marker({
+            position: Tokyo,
+            map: map
+        });
+        var marker12 = new google.maps.Marker({
+            position: Oslo,
+            map: map
+        });
+    }
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBJjOqtt9OISu81IXT0Aq1v2ev3VIaBQ6M&callback=initMap"
+        async defer></script>

@@ -1,0 +1,17 @@
+<%= render 'creatives/navbar' %>
+
+<div class="container">
+  <h1 class="text-center">Create a new city</h1>
+  <hr>
+</div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 text-center">
+      <% if @user&&@user.isAdmin %>
+          <%= render 'form', city: @city %>
+          <%= link_to 'Back', cities_path %>
+      <% end %>
+    </div>
+  </div>
+</div>

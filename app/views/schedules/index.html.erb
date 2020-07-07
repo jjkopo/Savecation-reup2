@@ -1,0 +1,41 @@
+<%= render 'creatives/navbar' %>
+
+<div class="container">
+  <h1 class="text-center">Schedule</h1>
+  <hr>
+  <p class="text-center">Showing a schedule for
+    <mark class="bg-primary"><%= @city_name %></mark>
+  </p>
+</div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-8">
+      <div class="list-group">
+        <% @result['data'].each do |key, array| %>
+            <h3><%= "#{key}" %></h3>
+            <% array.each do |attraction| %>
+                <a href="<%= @attraction_base_url %><%= attraction['id'] %>" class="list-group-item"><%= attraction['title'] %>
+                  <span class="badge">$<%= trim(attraction['price']) %></span></a>
+            <% end %>
+        <% end %>
+      </div>
+      <h2 class="text-right">
+        <small>Total: $<%= @total_price %></small>
+      </h2>
+    </div>
+
+    <div class="col-md-4">
+      <p class="text-right">Budget? <kbd>$<%= @budget %></kbd></p>
+      <p class="text-right">Days? <kbd><%= @days %></kbd></p>
+      <p class="text-right">Created schedule ID? <kbd><%= @new_schedule.id.to_s %></kbd></p>
+      <button onclick="goBack()" type="button" class="btn btn-warning pull-right">Go back</button>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+    function goBack() {
+        window.history.back();
+    }
+</script>

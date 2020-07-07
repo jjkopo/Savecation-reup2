@@ -1,0 +1,37 @@
+<%= render 'creatives/navbar' %>
+
+<div class="container">
+  <h1 class="text-center">Admin Page</h1>
+  <hr>
+  <p class="text-center">To do
+    <mark class="bg-primary">Admin</mark>
+    things..
+  </p>
+</div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-8 col-md-offset-2 text-center">
+      <% if @user.isAdmin %>
+          <table class="table table-hover">
+            <thead>
+            <tr>
+              <th class="text-center">Username</th>
+              <th class="text-center">Email</th>
+              <th class="text-center">Destroy Link</th>
+            </tr>
+            </thead>
+            <tbody>
+            <% @users.each do |user| %>
+                <tr>
+                  <td><%= user.username %></td>
+                  <td><%= user.email %></td>
+                  <td><%= link_to 'Destroy', user, method: :delete, data: {confirm: 'Are you sure?'} %></td>
+                </tr>
+            <% end %>
+            </tbody>
+          </table>
+      <% end %>
+    </div>
+  </div>
+</div>

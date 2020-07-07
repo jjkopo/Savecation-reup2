@@ -1,0 +1,30 @@
+<%= render 'creatives/navbar' %>
+
+<div class="container">
+  <h1 class="text-center"><i class="fa fa-user-circle-o fa-3x" aria-hidden="true"></i> </h1>
+  <hr>
+  <p class="text-center">Showing profile page for
+    <mark class="bg-primary"><%= @user.username %></mark>
+  </p>
+  <p class="text-center">
+    <strong>Email:</strong>
+    <%= @user.email %>
+  </p>
+  <p class="text-center"><%= link_to 'Delete your profile', @user, method: :delete, data: { confirm: 'Are you sure?' } %></p>
+</div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-8">
+      <% unless @schedules.empty? %>
+          <h1>Schedules</h1>
+          <div class="list-group">
+            <%= render @user.schedules %>
+          </div>
+      <% else %>
+          <h3>No schedules have been created so far..</h3>
+      <% end %>
+    </div>
+  </div>
+</div>
+

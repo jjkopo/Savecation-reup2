@@ -1,0 +1,2 @@
+module GenerateScheduleHelper
+end

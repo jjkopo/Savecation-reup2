@@ -1,0 +1,58 @@
+<%= render 'creatives/navbar' %>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<div class="container">
+  <h1 class="text-center"><%= @title %> - $<%= @price %></h1>
+  <hr>
+  <p class="text-center">Location in
+    <mark class="bg-primary"><%= @city_name %></mark>
+  </p>
+</div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-8 col-md-offset-2">
+      <div class="column">
+        <p id="img_city"></p>
+      </div>
+      <div class="column">
+        <p class="leftalign" id="info"></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-8 col-md-offset-2" style="height: 400px; margin-bottom: 20px">
+      <iframe width="100%" height="100%" src="<%= h @src %>">
+      </iframe>
+    </div>
+  </div>
+</div>
+
+<script>
+    function goBack() {
+        window.history.back();
+    }
+
+    function Get(yourUrl) {
+        var Httpreq = new XMLHttpRequest(); // a new request
+        Httpreq.open("GET", yourUrl, false);
+        Httpreq.send(null);
+        return Httpreq.responseText;
+    }
+
+    var json_obj = JSON.parse(Get("https://pure-coast-27115.herokuapp.com/data/attraction/" + <%= @attraction_id %>));
+    console.log(json_obj);
+
+    data = json_obj["data"];
+
+    function gContent() {
+        document.getElementById("img_city").innerHTML = "<img src=" + "\"" + data[0].photoURL + "\"" + ">";
+        document.getElementById("info").innerHTML = "<p>" + data[0].description + "</p>";
+    }
+
+    window.onload = gContent();
+</script>

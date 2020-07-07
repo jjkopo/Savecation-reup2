@@ -1,0 +1,2 @@
+module TriplacesHelper
+end

@@ -1,0 +1,83 @@
+<header>
+  <div class="header-content">
+    <div class="header-content-inner">
+      <h1>Savecation</h1>
+      <br><br><br>
+      <p>Savecation is an online app that allows users to vacation on a budget.</p><br>
+       <div class="wrap">
+        <div class="search">
+          <input type="text" autocomplete="off" id="search_term" list="json-citylist" class="searchTerm" placeholder="Enter your destination...">
+          <datalist id="json-citylist"></datalist>
+          <button onclick="search()" type="submit" class="searchButton">
+            <i class="fa fa-search"></i>
+          </button>
+        </div>
+        <kbd class="bg-dark" id="errorm"></kbd>
+      </div>
+
+
+      <script type="text/javascript">
+          var dataList = document.getElementById('json-citylist');
+          var input = document.getElementById('ajax');
+
+
+          /**
+           * @return {string}
+           */
+          function Get() {
+              var Httpreq = new XMLHttpRequest(); // a new request
+              Httpreq.open("GET", "https://pure-coast-27115.herokuapp.com/data/cities", false);
+              Httpreq.send(null);
+              return Httpreq.responseText;
+          }
+
+          var json_obj = JSON.parse(Get());
+          data = json_obj["data"];
+          var dict = {};
+
+          for (var i = 0; i < data.length; i++) {
+              var option = document.createElement('option');
+              option.value = data[i].name;
+              dataList.appendChild(option);
+              dict[data[i].name.toLowerCase()] = "https://pure-coast-27115.herokuapp.com/city_detail/" + data[i].id;
+          }
+
+          function search() {
+              var input = document.getElementById("search_term").value.toLowerCase();
+              console.log(input);
+              var keys = Object.keys(dict);
+              var found = false;
+              keys.forEach(function (key) {
+                  if (key === input) {
+                      found = true;
+                      console.log("found in key input =" + found);
+                      window.location = dict[key];
+                  }
+                  document.getElementById("errorm").innerHTML = "";
+              });
+
+              console.log("found =" + found);
+              if (found === false) {
+                  document.getElementById("errorm").innerHTML = "City spelled wrong or not yet supported";
+              }
+          }
+
+          $("#search_term").on('keyup', function (e) {
+              document.getElementById("errorm").innerHTML = "";
+              if (e.keyCode === 13) {
+                  search();
+              }
+          });
+
+
+
+
+      </script>
+
+
+
+
+    </div>
+
+  </div>
+</header>
